@@ -51,7 +51,7 @@ The element `pol['compound']` is a numpy array of size 100.
 
 **5. Classification**
 
-Often you just want to know if a sentence is positive negative or neutral. There's now a function that does this by utilising the bootstrap.
+Often you just want to know if a sentence is positive, negative or neutral. There's now a function that does this by utilising the bootstrap.
 ```
 Nvader.classify(text, conf=0.95, neutral_range=(0,0), method="majority_vote" ):
 ```
