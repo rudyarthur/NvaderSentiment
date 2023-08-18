@@ -20,7 +20,7 @@ apply_but
 apply_specialcases
 ```
 
-These can be used to turn off the various rules VADER uses when assigning sentiment. Turn them all off with `Nvader.nomodify()`, turn off everything but negation with `Nvader.only_negate()` otherwise pick and choose which ones to use.
+These can be used to turn off the various rules VADER uses when assigning sentiment. Turn them all off with `Nvader.no_modify()`, turn off everything but negation with `Nvader.only_negate()` otherwise pick and choose which ones to use.
 
 **2. normalization**
  - Set `normtype='standard'` to use the usual rule for turning summed word scores into a polarity value `p = s/sqrt(s*s+alpha)` where `alpha=15` usually
