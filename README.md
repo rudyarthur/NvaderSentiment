@@ -1,6 +1,6 @@
 # NvaderSentiment
 Vader sentiment with bootstraps
-
+![example](https://github.com/rudyarthur/NvaderSentiment/blob/main/vaderSentiment/output.png)
 This code is adapted from the popular [vaderSentiment](https://github.com/cjhutto/vaderSentiment/tree/master) library. You use it in the same way but it has a few interesting new features
 ```
 from NvaderSentiment import NSentimentIntensityAnalyzer
