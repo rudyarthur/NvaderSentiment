@@ -200,6 +200,8 @@ class NSentimentIntensityAnalyzer(object):
         _this_module_file_path_ = os.path.abspath(getsourcefile(lambda: 0))
         lexicon_full_filepath = os.path.join(os.path.dirname(_this_module_file_path_), lexicon_file)
         
+        self.alpha = 15
+        self.maxv = 4
         self.Nboots = Nboots
         self.normtype = normtype
         self.apply_boost = True
@@ -286,7 +288,7 @@ class NSentimentIntensityAnalyzer(object):
         
         if method == "confidence":
             rs = np.sort(score_array)
-            lb, ub = rs[ round( (1-conf)*self.Nboots) ], rs[ round(conf*self.Nboots)-1 ]    
+            lb, ub = rs[ round( 0.5*(1-conf)*self.Nboots) ], rs[ round( 0.5*(1+conf)*self.Nboots)-1 ]    
             if lb >= neutral_range[0] and ub <= neutral_range[1]: return 'neu'
             if lb > neutral_range[1] and ub > neutral_range[1]: return 'pos'
             if lb < neutral_range[0] and ub < neutral_range[0]: return 'neg'
@@ -649,9 +651,9 @@ class NSentimentIntensityAnalyzer(object):
             if self.normtype == "raw": 
                 compound = sum_s
             elif self.normtype == "linear":
-                compound = linearnormalize(sum_s)
+                compound = linearnormalize(sum_s, alpha=self.alpha)
             else:
-                compound = normalize(sum_s)   				
+                compound = normalize(sum_s, alpha=self.alpha, maxv=self.maxv)   				
             
 
             # discriminate between positive, negative and neutral sentiment scores TODO
