@@ -8,6 +8,8 @@ Nvader = NSentimentIntensityAnalyzer(lexicon_file="vader_lexicon.txt", emoji_lex
 s = "Nvader is not very smart." 
 print(Nvader.polarity_scores(s, return_tagged=False))
 ```
+Default behaviour is identical to VADER.
+
 **1. flags**
 ```
 apply_boost
