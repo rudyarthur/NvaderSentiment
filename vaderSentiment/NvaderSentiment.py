@@ -450,11 +450,16 @@ class NSentimentIntensityAnalyzer(object):
                 scalar = np.where(valence > 0, scalar, -scalar)
                 				
             # check if booster/dampener word is in ALLCAPS (while others aren't)
-            if word.isupper() and is_cap_diff:
-                if valence > 0:
-                    scalar += C_INCR
+            if self.apply_allcap and word.isupper() and is_cap_diff:
+                #if valence > 0:
+                #    scalar += C_INCR
+                #else:
+                #    scalar -= C_INCR
+                if self.Nboots == 1:
+                    scalar += (1 - 2*(valence < 0))*C_INCR
                 else:
-                    scalar -= C_INCR
+                    scalar += np.where(valence > 0, C_INCR, -C_INCR)
+                
         return scalar
     
     def _least_check(self, valence, words_and_emoticons, i):
