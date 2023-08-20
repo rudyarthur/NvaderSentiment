@@ -113,26 +113,7 @@ def negated(input_words, include_nt=True):
     return False
 
 
-def normalize(score, alpha=15):
-    """
-    Normalize the score to be between -1 and 1 using an alpha that
-    approximates the max expected value
-    
-    Rudy: Differences between really positive or negative scores are squashed a lot
-    Rudy: e.g. score = 2 -> 0.46, score = 4 -> 0.72. score = 15 -> 0.97, score = 30 -> 0.99
-    Rudy: If you run this on longer texts, you'd want to increase alpha a lot!
-    """
-    #norm_score = score / math.sqrt((score * score) + alpha)
-    #if norm_score < -1.0: #Rudy: I don't think this is possible
-    #    return -1.0
-    #elif norm_score > 1.0:
-    #    return 1.0
-    #else:
-    #    return norm_score
-    return score / np.sqrt((score * score) + alpha)
 
-def linearnormalize(score, alpha=15, maxv=4):
-    return maxv * score / alpha
     
 def allcap_differential(words):
     """
@@ -236,6 +217,27 @@ class NSentimentIntensityAnalyzer(object):
         self.apply_but = False
         self.apply_specialcases = False
 
+    def normalize(self, score):
+        """
+        Normalize the score to be between -1 and 1 using an alpha that
+        approximates the max expected value
+		
+		Rudy: Differences between really positive or negative scores are squashed a lot
+		Rudy: e.g. score = 2 -> 0.46, score = 4 -> 0.72. score = 15 -> 0.97, score = 30 -> 0.99
+		Rudy: If you run this on longer texts, you'd want to increase alpha a lot!
+		"""
+		#norm_score = score / math.sqrt((score * score) + alpha)
+		#if norm_score < -1.0: #Rudy: I don't think this is possible
+		#    return -1.0
+		#elif norm_score > 1.0:
+		#    return 1.0
+		#else:
+		#    return norm_score
+        return score / np.sqrt((score * score) + self.alpha)
+
+    def linearnormalize(self, score):
+        return self.maxv * score / self.alpha
+    
     def make_lex_dict(self):
         """
         Convert lexicon file to a dictionary
@@ -656,9 +658,9 @@ class NSentimentIntensityAnalyzer(object):
             if self.normtype == "raw": 
                 compound = sum_s
             elif self.normtype == "linear":
-                compound = linearnormalize(sum_s, alpha=self.alpha)
+                compound = self.linearnormalize(sum_s)
             else:
-                compound = normalize(sum_s, alpha=self.alpha, maxv=self.maxv)   				
+                compound = self.normalize(sum_s)   				
             
 
             # discriminate between positive, negative and neutral sentiment scores TODO
