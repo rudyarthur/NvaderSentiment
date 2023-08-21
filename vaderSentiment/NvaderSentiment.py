@@ -288,6 +288,15 @@ class NSentimentIntensityAnalyzer(object):
             if score_array > neutral_range[1]: return 1
             return -1
         
+        if method == "median" or method == "mean":
+			
+            if method == "median": score = np.median(score_array)
+            if method == "mean": score = np.mean(score_array)
+            
+            if score >= neutral_range[0] and score <= neutral_range[1]: return 'neu'
+            if score > neutral_range[1]: return 'pos'
+            return 'neg'
+			
         if method == "confidence":
             rs = np.sort(score_array)
             lb, ub = rs[ round( 0.5*(1-conf)*self.Nboots) ], rs[ round( 0.5*(1+conf)*self.Nboots)-1 ]    
